@@ -1,4 +1,4 @@
-  import React, {Component} from 'react';
+import React, {Component} from 'react';
   import {AppRegistry, ListView, View, Image, Text, TouchableOpacity, AsyncStorage} from 'react-native';
   import {Actions} from 'react-native-router-flux';
 

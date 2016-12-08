@@ -16,7 +16,7 @@ async onEndCallback (test) {
     Actions.companyList({type: 'reset'});
     Actions.signup();
     try {
-      await AsyncStorage.setItem((new Constants()).getIsOnboardingSeenKey(), JSON.stringify(true));
+      await AsyncStorage.setItem('isOnboardingSeen', JSON.stringify(true));
       alert('Saved value:'+JSON.stringify(true)+' for key:'+(new Constants()).getIsOnboardingSeenKey());
    } catch (error) {
     // Error saving data

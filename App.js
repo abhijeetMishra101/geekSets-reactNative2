@@ -30,35 +30,24 @@ isIOS () {
 }
 
    componentDidMount() {
-     AsyncStorage.getItem((new Constants()).getIsOnboardingSeenKey(),
-(value)=>{
-if (value == null || value == undefined) {
-alert(value+'for key:'+(new Constants()).getIsOnboardingSeenKey());
-  this.state = {
-    isLoading: false,
-    isOnboardingSeen:false,
-    isIOS:this.isIOS()
-  };
+     AsyncStorage.getItem('isOnboardingSeen').then((value)=>{
+     if (value == null || value == undefined) {
+     this.state = {
+      isLoading: false,
+      isOnboardingSeen:false,
+      isIOS:this.isIOS()
+     };
+     }
+     else {
+     this.state = {
+      isLoading: false,
+      isOnboardingSeen:JSON.parse(value),
+      isIOS:this.isIOS()
+     };
+     }
+     this.forceUpdate();
+   });
 }
-else {
-  alert(value);
-  this.state = {
-    isLoading: false,
-    isOnboardingSeen:JSON.parse(value),
-    isIOS:this.isIOS()
-  };
-}
-this.forceUpdate();
-},
-(error) => {
-  this.state = {
-    isLoading: false,
-    isOnboardingSeen:false,
-    isIOS:this.isIOS()
-  };
-})
-}
-
   render () {
   if (this.state.isLoading) {
     return (<View>
