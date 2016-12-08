@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {AppRegistry, StyleSheet, View, Image, Alert} from 'react-native';
+import {AppRegistry, StyleSheet, View, Image, Alert, ActivityIndicator} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import Dimensions from 'Dimensions';
 
@@ -9,6 +9,8 @@ import ActionButton from './ActionButton';
 
 import CommonAdapter from './CommonAdapter';
 
+var isScreenToBeDismissed2;
+
 export default class SignIn extends Component {
   constructor() {
     super();
@@ -16,10 +18,32 @@ export default class SignIn extends Component {
     this.state = {'width':window.width,
     'height':window.height,
 'email':'',
-'password':''
+'password':'',
+showProgress:false
   };
   }
+  componentDidMount () {
+    firebase.auth().onAuthStateChanged(function(user) {
+  console.log('auth callback1');
+    if (user) {
+      // User is signed in.
+    //TODO:: dismiss the UI
+    }
+    var window = Dimensions.get('window');
+    this.state = {'width':window.width,
+    'height':window.height,
+  showProgress:false};
+if (isScreenToBeDismissed2) {
+  Actions.pop();
+  isScreenToBeDismissed2 = false;
+}
+    });
+  }
 submitTapped (text) {
+  this.state = {'width':window.width,
+  'height':window.height,
+  showProgress:true};
+  isScreenToBeDismissed2 = true;
 this.performSignIn(this.state.email,this.state.password);
 }
 onSubmitSuccess () {
@@ -49,6 +73,7 @@ render () {
     <Image style={styles.imageStyle} resizeMode='contain' source={require('./img/login.png')}/>
     <EmailPasswordGenericView width={this.state.width} height={this.state.height} onEmailChange={(email)=>this.onEmailChange(email)} onPasswordChange={(password)=>this.onPasswordChange(password)}/>
     <ActionButton text='Submit' action={()=> this.submitTapped()}/>
+    <ActivityIndicator style={{flex:this.state.showProgress ? 1:0, opacity: this.state.showProgress ? 1.0 : 0.0}} color='#00C26D' animating={true} size="large"/>
     </View>
     );
   }

@@ -15,7 +15,6 @@ export default class geekSets extends Component {
     super(props);
 
 var isIOS = this.isIOS();
-
     this.state = {
       isLoading:true,
       isOnboardingSeen: false,

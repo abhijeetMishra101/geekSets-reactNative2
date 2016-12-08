@@ -33,7 +33,7 @@ if (userName == currentUserKey) {
 }
 
 
-  performSignUp(email, password, signUpCallback) {
+  performSignUp(email, password, signUpErrorCallback) {
             firebase.auth().createUserWithEmailAndPassword(email, password)
                 .catch(function(error) {
 
@@ -43,8 +43,9 @@ if (userName == currentUserKey) {
     }
     else {
        successStatus = 'signup success';
-       if (signUpCallback != null && signUpCallback != undefined) {
-         signUpCallback();
+       if (signUpErrorCallback != null && signUpErrorCallback != undefined) {
+alert('callback trigger');
+         signUpErrorCallback();
        }
     }
                   Alert.alert(

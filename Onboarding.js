@@ -37,7 +37,7 @@ if (Platform.OS === 'ios') {
     ]}
     onEnd={()=> this.onEndCallback('test')}
   >
-  <StatusBar backgroundColor="blue" barStyle="light-content" />
+  <StatusBar backgroundColor="#00C26D" barStyle="light-content" />
   </Onboarding>
   );
 }
@@ -51,7 +51,7 @@ else {
     ]}
     onEnd={()=> this.onEndCallback('test')}
   >
-  <StatusBar backgroundColor="blue" barStyle="light-content" />
+  <StatusBar backgroundColor="#00C26D" barStyle="light-content" />
   </Onboarding>
   );
 }

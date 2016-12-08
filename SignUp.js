@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import {AppRegistry, StyleSheet, View, Image, Alert, ActivityIndicator} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import Dimensions from 'Dimensions';
+import * as firebase from 'firebase';
 
 import EmailPasswordGenericView from './EmailPasswordGenericView';
 import AlternateOptionButton from './AlternateOptionButton';
 import ActionButton from './ActionButton';
 
 import CommonAdapter from './CommonAdapter';
+
+var isScreenToBeDismissed1;
 
 export default class SignUp extends Component {
 
@@ -18,21 +21,39 @@ export default class SignUp extends Component {
     'height':window.height,
   showProgress:false};
   }
-
+  componentDidUnMount () {
+    isSubsequentInvocation = false;
+  }
+  componentDidMount () {
+    firebase.auth().onAuthStateChanged(function(user) {
+  console.log('auth callback1');
+    if (user) {
+      // User is signed in.
+    //TODO:: dismiss the UI
+    }
+    var window = Dimensions.get('window');
+    this.state = {'width':window.width,
+    'height':window.height,
+  showProgress:false};
+if (isScreenToBeDismissed1) {
+  Actions.pop();
+  Actions.pop();
+  isScreenToBeDismissed1 = false;
+}
+    });
+  }
 submitTapped (text) {
 this.performSignUp(this.state.email,this.state.password,()=>{this.onSubmitSuccess('test')});
 var window = Dimensions.get('window');
 this.state = {'width':window.width,
 'height':window.height,
 showProgress:true};
+isScreenToBeDismissed1 = true;
+this.forceUpdate();
 }
 
 onSubmitSuccess (text) {
-  var window = Dimensions.get('window');
-  this.state = {'width':window.width,
-  'height':window.height,
-showProgress:false};
-//TODO:: dismiss the UI
+
 }
 
 signInTapped (text) {
@@ -40,7 +61,7 @@ Actions.signin();
 }
 
 performSignUp(email, password) {
-    new CommonAdapter().performSignUp(email, password);
+    new CommonAdapter().performSignUp(email, password,()=>{});
 }
 
 onEmailChange(emailText) {

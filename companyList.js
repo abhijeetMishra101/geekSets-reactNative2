@@ -65,6 +65,7 @@
      componentDidMount() {
          this.listenForItems(this.itemsRef);
          Actions.refresh({hideNavBar:false});
+         isScreenToBeDismissed = false;
        }
 
      listenForItems(itemsRef) {
@@ -174,7 +175,7 @@
        renderRow={this._renderRow}
      />
      <ActivityIndicator style={{flex:this.state.showProgress ? 1:0, opacity: this.state.showProgress ? 1.0 : 0.0}} color='#00C26D' animating={true} size="large"/>
-<StatusBar backgroundColor="blue" barStyle="dark-content" />
+<StatusBar backgroundColor="white" barStyle="dark-content" />
       </View>
          );
     }
