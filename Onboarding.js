@@ -17,11 +17,9 @@ async onEndCallback (test) {
     Actions.signup();
     try {
       await AsyncStorage.setItem('isOnboardingSeen', JSON.stringify(true));
-      alert('Saved value:'+JSON.stringify(true)+' for key:'+(new Constants()).getIsOnboardingSeenKey());
    } catch (error) {
     // Error saving data
     console.log('failure in setting async storage');
-    alert('Save Error');
    }
 }
 
