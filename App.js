@@ -57,15 +57,16 @@ isIOS () {
      if (this.state.isOnboardingSeen) {
     return (
       <Router>
-       <Scene key="root">
-       <Scene key="companyList" component={CompanyList} title="Companies" rightTitle = "Login"
-               onRight = {() => { Actions.signup()}} initial/>
-       <Scene key="onboarding"  component={Onboarding} hideNavBar={true} type="JUMP"/>
+        <Scene key="root">
+        <Scene key="companyList" component={CompanyList} title="Companies" navigationBarStyle={{ backgroundColor: '#00C26D' }}
+titleStyle={{ color: 'white' }} initial/>
+        <Scene key="onboarding"  component={Onboarding} hideNavBar={true} type="JUMP"/>
         <Scene key='signin' component={SignIn}/>
         <Scene key='signup' component={SignUp}/>
-        <Scene key="companyView" component={CompanyView} title="test" rightTitle = "Login"
-                onRight = {() => { Actions.signup()}}/>
-        <Scene key='browserView' component={Browser} title=""/>
+        <Scene key="companyView" component={CompanyView} title="test" navigationBarStyle={{ backgroundColor: '#00C26D' }}
+titleStyle={{ color: 'white' }}/>
+        <Scene key='browserView' component={Browser} title="" navigationBarStyle={{ backgroundColor: '#00C26D' }}
+titleStyle={{ color: 'white' }}  onBack={() => {Actions.pop({ refresh: {} }); }}/>
        </Scene>
       </Router>
     );
@@ -73,14 +74,12 @@ isIOS () {
      else {
     return (
       <Router>
-       <Scene key="root">
-       <Scene key="onboarding"  component={Onboarding} hideNavBar={true} type="JUMP" intial/>
-       <Scene key="companyList" component={CompanyList} title="Companies" rightTitle = "Login"
-               onRight = {() => { Actions.signup()}}/>
+        <Scene key="root">
+        <Scene key="onboarding"  component={Onboarding} hideNavBar={true} type="JUMP" intial/>
+        <Scene key="companyList" component={CompanyList} title="Companies"/>
         <Scene key='signin' component={SignIn}/>
         <Scene key='signup' component={SignUp}/>
-        <Scene key="companyView" component={CompanyView} title="test" rightTitle = "Login"
-                onRight = {() => { Actions.signup()}}/>
+        <Scene key="companyView" component={CompanyView}/>
         <Scene key='browserView' component={Browser} title=""/>
        </Scene>
       </Router>

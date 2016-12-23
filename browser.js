@@ -17,7 +17,6 @@ export default class browserClass extends Component {
 
 var url = this.props.data;
 
-
     this.state = {
         id: 'browserView',
         url:url
@@ -47,7 +46,7 @@ render () {
   return (
     <WebView
         source={{uri: this.state.url}}
-        style={{marginTop: 20}}
+        style={{marginTop: 80}}
       />
   );
 }

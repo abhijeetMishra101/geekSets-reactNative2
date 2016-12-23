@@ -11,10 +11,42 @@ import React, {Component} from 'react';
 
   var userCompletedSetList;
 
+  var companyName;
+
+  var completedURLList;
+
   class SetCell extends Component {
     constructor(props) {
   super(props);
+    this._saveURL = this._saveURL.bind(this);
+    this.state = {isPressed:false};
     }
+
+  async _saveURL(url) {
+
+    try {
+    const value = await AsyncStorage.getItem(companyName)
+    if (value !== null) {
+      completedURLList = JSON.parse(value);
+       }
+      } catch (error) {
+        completedURLList = [];
+    }
+
+if (completedURLList == undefined) {
+  completedURLList = [];
+}
+else {
+  completedURLList.push(url);
+}
+
+   try {
+     await AsyncStorage.setItem(companyName, JSON.stringify(completedURLList));
+     this.props.onPressTest();
+   } catch (error) {
+    }
+  }
+
     _pressRow (rowData) {
   var selectedCompany = rowData;
 
@@ -22,12 +54,18 @@ import React, {Component} from 'react';
 
   var url = this.props.url;
 
+  this._saveURL(this.props.text);
+
+this.state = {isPressed:true}
+this.forceUpdate();
+
   Actions.browserView(url)
       }
+
     render () {
       return (
         <TouchableOpacity style={{flex:1}} onPress={()=> this._pressRow(this.props.text)}>
-         <Text style = {{flex:1, paddingLeft:20, backgroundColor:'white', color:this.props.isCompleted?'#FF3D92':'#00C26D',height:60}}>{this.props.text} </Text>
+         <Text style = {{flex:1, paddingLeft:20, backgroundColor:'white', color:this.state.isPressed?'#FF3D92':(this.props.isCompleted?'#FF3D92':'#00C26D'),height:60}}>{this.props.text} </Text>
         </TouchableOpacity>
       );
     }
@@ -38,15 +76,17 @@ import React, {Component} from 'react';
   super(props);
 
   AsyncStorage.getItem((new Constants()).getOpenedSetsKey()).then((value)=>{
-console.log('value from async '+value);
-    userCompletedSetList = value.split(',');
-  });
+if (value != null && value != undefined) {
+  userCompletedSetList = value.split(',');
+
+}
+    });
 
   let ds = new ListView.DataSource({rowHasChanged: (r1, r2) =>(r1 !== r2)});
 
   var companyInfo = this.props.set;
 
-  var companyName = this.props.name;
+  companyName = this.props.name;
 
    var arr = Object.keys(companyInfo).map(function (key) { return companyInfo[key]; });
 
@@ -63,21 +103,34 @@ console.log('value from async '+value);
       id: 'companyView',
   dataSource: ds.cloneWithRows(setList)
     };
+    this._fetchCompletedURLs = this._fetchCompletedURLs.bind(this);
   }
 
-  componentWillMount() {
-    Actions.refresh({title: this.props.name, onRight:() => { Actions.login('test')}})
+
+  componentDidMount() {
+    this._fetchCompletedURLs();
+    Actions.refresh({title: this.props.name})
   }
+
+async _fetchCompletedURLs () {
+    try {
+    const value = await AsyncStorage.getItem(companyName);
+    if (value !== null) {
+      completedURLList = JSON.parse(value);
+        this.forceUpdate();
+       }
+      } catch (error) {
+        completedURLList = [];
+    }
+}
+
   _checkIfCompleted (rowData: string, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) {
 var setname = rowData;
-console.log('checking for setname:'+setname+'usersetlist:'+userCompletedSetList);
-
   if (userCompletedSetList == undefined) {
    return false;
   }
 
   var result;
-  console.log('set name '+setName+'list '+userCompletedSetList);
     for (var i = 0; i < userCompletedSetList.length; i++) {
      if ( userCompletedSetList[i] == setName) {
        return true;
@@ -85,23 +138,29 @@ console.log('checking for setname:'+setname+'usersetlist:'+userCompletedSetList)
     }
     return false;
   }
-  _renderRow (rowData: string, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) {
+
+isURLCompleted(url) {
+  for (var i = 0; i < completedURLList.length; i++) {
+    if (completedURLList[i] == url) {
+      return true;
+    }
+  }
+  return false;
+}
+_renderRow (rowData: string, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) {
 
 var list = userCompletedSetList;
-console.log('list1 '+userCompletedSetList);
 var completedState = false;
-if (userCompletedSetList == undefined) {
-  completedState = false;
-}
-else {
-  for (var i = 0; i < userCompletedSetList.length; i++) {
-    console.log('user list:'+(i+1)+userCompletedSetList[i]+'url set:'+urlList[rowID]);
-   if (userCompletedSetList[i] == urlList[rowID]) {
-     completedState = true;
-   }
+
+if (completedURLList != undefined) {
+  for (var i = 0; i < completedURLList.length; i++) {
+    if (completedURLList[i] == rowData) {
+      completedState = true;
+    }
   }
 }
-  return (<SetCell text={rowData} url={urlList[rowID]} isCompleted={completedState}/>);
+
+  return (<SetCell text={rowData} url={urlList[rowID]} isCompleted={completedState} onPressTest={()=>this._fetchCompletedURLs}/>);
   }
 
   render() {

@@ -14,7 +14,7 @@ this.state = {
 
 async onEndCallback (test) {
     Actions.companyList({type: 'reset'});
-    Actions.signup();
+  //  Actions.signup();
     try {
       await AsyncStorage.setItem('isOnboardingSeen', JSON.stringify(true));
    } catch (error) {
@@ -43,7 +43,7 @@ else {
   return (
   <Onboarding
     pages={[
-      { backgroundColor: '#00C26D', image: <Image source={require('./img/onboarding_1.png')} />, title: 'geekSets', subtitle: 'Lets you prepare for major tech company interviews' },
+        { backgroundColor: '#00C26D', image: <Image source={require('./img/onboarding_1.png')} />, title: 'geekSets', subtitle: '' },
         { backgroundColor: "#00C26D", image: <Image source={require('./img/onboarding_2.png')} />, title: 'Choose your category', subtitle: 'Find the list of companies' },
         { backgroundColor: "#00C26D", image: <Image source={require('./img/onboarding_2.png')} />, title: 'Choose the interview set', subtitle: 'Choose the set of inteview' },
     ]}
