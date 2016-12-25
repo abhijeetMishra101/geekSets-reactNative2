@@ -65,7 +65,7 @@ this.forceUpdate();
     render () {
       return (
         <TouchableOpacity style={{flex:1}} onPress={()=> this._pressRow(this.props.text)}>
-         <Text style = {{flex:1, paddingLeft:20, backgroundColor:'white', color:this.state.isPressed?'#FF3D92':(this.props.isCompleted?'#FF3D92':'#00C26D'),height:60}}>{this.props.text} </Text>
+         <Text style = {{flex:1, paddingLeft:20, backgroundColor:'#EFE7DE', color:this.state.isPressed?'#FF3D92':(this.props.isCompleted?'#FF3D92':'#00C26D'),height:60}}>{this.props.text} </Text>
         </TouchableOpacity>
       );
     }
@@ -166,7 +166,7 @@ if (completedURLList != undefined) {
   render() {
       return (
    <ListView
-   style={{paddingTop:80}}
+   style={{paddingTop:80,backgroundColor:'#EFE7DE'}}
    enableEmptySections={true}
    dataSource = {this.state.dataSource}
    renderRow = {this._renderRow}/>

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, AppRegistry, Text, WebView} from 'react-native';
+import {View, AppRegistry, Text, WebView,ActivityIndicator} from 'react-native';
 
 // import {
 //   processColor, // make sure to add processColor to your imports if you want to use hex colors as shown below
@@ -18,6 +18,7 @@ export default class browserClass extends Component {
 var url = this.props.data;
 
     this.state = {
+        isLoaded:false,
         id: 'browserView',
         url:url
         };
@@ -43,12 +44,33 @@ var url = this.props.data;
   }
 
 render () {
-  return (
+  if (this.state.isLoaded) {
+    return (
+      <WebView
+          source={{uri: this.state.url}}
+          style={{marginTop: 80}}
+        />
+    );
+  }
+  else {
+    return (
+    <View style={{flex:1}}>
     <WebView
         source={{uri: this.state.url}}
-        style={{marginTop: 80}}
+        style={{marginTop: 80,flex:1}}
+        onLoadStart={()=>{
+          this.state = {
+            isLoaded:true,
+            id: 'browserView',
+            url:this.props.data
+            };
+            this.forceUpdate();
+          }}
       />
-  );
+      <ActivityIndicator style={{flex:this.state.isLoaded ? 0:1, opacity: this.state.isLoaded ?0:1}} color='#075E54' animating={true} size="large"/>
+    </View>
+    );
+  }
 }
 }
 

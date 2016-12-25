@@ -9,6 +9,8 @@ import CompanyList from './companyList';
 import CompanyView from './CompanyView';
 import Browser from './browser';
 import Constants from './Constants';
+import codePush from "react-native-code-push";
+
 
 export default class geekSets extends Component {
   constructor(props) {
@@ -30,6 +32,7 @@ isIOS () {
 }
 
    componentDidMount() {
+     codePush.sync();
      AsyncStorage.getItem('isOnboardingSeen').then((value)=>{
      if (value == null || value == undefined) {
      this.state = {
@@ -64,9 +67,9 @@ titleStyle={{ color: 'white' }} initial/>
         <Scene key='signin' component={SignIn}/>
         <Scene key='signup' component={SignUp}/>
         <Scene key="companyView" component={CompanyView} title="test" navigationBarStyle={{ backgroundColor: '#00C26D' }}
-titleStyle={{ color: 'white' }}/>
+titleStyle={{ color: 'white' }} leftButtonIconStyle={{tintColor:'white'}}/>
         <Scene key='browserView' component={Browser} title="" navigationBarStyle={{ backgroundColor: '#00C26D' }}
-titleStyle={{ color: 'white' }}  onBack={() => {Actions.pop({ refresh: {} }); }}/>
+titleStyle={{ color: '#075E54' }} leftButtonIconStyle={{tintColor:'white'}} onBack={() => {Actions.pop({ refresh: {} }); }}/>
        </Scene>
       </Router>
     );
@@ -76,12 +79,15 @@ titleStyle={{ color: 'white' }}  onBack={() => {Actions.pop({ refresh: {} }); }}
       <Router>
         <Scene key="root">
         <Scene key="onboarding"  component={Onboarding} hideNavBar={true} type="JUMP" intial/>
-        <Scene key="companyList" component={CompanyList} title="Companies"/>
+        <Scene key="companyList" component={CompanyList} title="Companies" navigationBarStyle={{ backgroundColor: '#00C26D' }}
+        titleStyle={{ color: 'white' }}/>
         <Scene key='signin' component={SignIn}/>
         <Scene key='signup' component={SignUp}/>
-        <Scene key="companyView" component={CompanyView}/>
-        <Scene key='browserView' component={Browser} title=""/>
-       </Scene>
+        <Scene key="companyView" component={CompanyView} title="test" navigationBarStyle={{ backgroundColor: '#00C26D' }}
+        titleStyle={{ color: 'white' }} leftButtonIconStyle={{tintColor:'white'}}/>
+        <Scene key='browserView' component={Browser} title="" navigationBarStyle={{ backgroundColor: '#00C26D' }}
+        titleStyle={{ color: 'white' }} leftButtonIconStyle={{tintColor:'white'}} onBack={() => {Actions.pop({ refresh: {} }); }}/>
+        </Scene>
       </Router>
     );
      }

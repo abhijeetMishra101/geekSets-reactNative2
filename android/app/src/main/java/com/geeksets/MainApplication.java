@@ -14,6 +14,8 @@ import com.facebook.soloader.SoLoader;
 import java.util.Arrays;
 import java.util.List;
 
+import com.microsoft.codepush.react.CodePush;
+
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
@@ -32,7 +34,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new CodePush(null, getApplicationContext(), BuildConfig.DEBUG)
+            new CodePush("hke-Vl1OAakB25eeBmOEGc5ROO_LNJ66HOlNG", getApplicationContext(), BuildConfig.DEBUG)
       );
     }
   };

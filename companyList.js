@@ -40,7 +40,7 @@
     render () {
       return (
         <TouchableOpacity style={{flex:1, flexDirection:'column',alignItems:'center',justifyContent:'center'}} onPress={()=> this._pressRow(this.props.text)}>
-         <Text style = {{fontSize:16,fontWeight:'600', paddingTop:20, paddingBottom:20, paddingLeft:20, backgroundColor:'white', color:'#00C26D',height:60}}>{this.props.text} </Text>
+         <Text style = {{fontSize:16,fontWeight:'600', paddingTop:20, paddingBottom:20, paddingLeft:20, backgroundColor:'#EFE7DE', color:'#00C26D',height:68}}>{this.props.text} </Text>
         </TouchableOpacity>
       );
          }
@@ -163,21 +163,30 @@
     var selectedCompany = rowData;
          }
     render () {
+if (this.state.showProgress) {
+  return (
+  <View style={{flex:1, backgroundColor:'#EFE7DE'}}>
+  <Text style={{textAlign:'center', paddingTop:160, color:'#075E54',flex:1,fontSize:20,fontWeight:'bold'}}> Initialising... </Text>
+  <Text style={{textAlign:'center', color:'#075E54', flex:1,fontSize:14}}> Please wait for a moment </Text>
+  <ActivityIndicator style={{flex:this.state.showProgress ? 12:0, opacity: this.state.showProgress ? 12.0 : 0.0}} color='#075E54' animating={true} size="large"/>
+  </View>
+     );
+}
+else {
+  return (
+  <View style={{flex:1,backgroundColor:'#EFE7DE'}}>
+  <ListView
 
-      return (
-      <View style={{flex:1}}>
-      <ListView
+style = {{flex:this.state.showProgress ? 0:1,paddingTop:80,backgroundColor:'#EFE7DE'}}
 
-    style = {{flex:this.state.showProgress ? 0:1,paddingTop:80}}
+   dataSource={this.state.dataSource}
+enableEmptySections={true}
+   renderRow={this._renderRow}
+ />
+   </View>
+     );
+}
 
-       dataSource={this.state.dataSource}
-    enableEmptySections={true}
-       renderRow={this._renderRow}
-     />
-     <ActivityIndicator style={{flex:this.state.showProgress ? 1:0, opacity: this.state.showProgress ? 1.0 : 0.0}} color='#00C26D' animating={true} size="large"/>
-<StatusBar backgroundColor="white" barStyle="dark-content" />
-      </View>
-         );
     }
      }
 
