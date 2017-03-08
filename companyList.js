@@ -5,10 +5,11 @@
      */
 
      import React, { Component} from 'react';
-     import { ListView, TouchableHighlight, TouchableOpacity, Image, ActivityIndicator, StatusBar } from 'react-native';
+     import { ListView, TouchableHighlight,Picker,Platform, TouchableOpacity, Image, ActivityIndicator, StatusBar } from 'react-native';
      import * as firebase from 'firebase';
      import {
        AppRegistry,
+       AppState,
        StyleSheet,
        Text,
        View
@@ -38,13 +39,84 @@
     Actions.companyView(compnayInfo)
          }
     render () {
-      return (
-        <TouchableOpacity style={{flex:1, flexDirection:'column',alignItems:'center',justifyContent:'center'}} onPress={()=> this._pressRow(this.props.text)}>
-         <Text style = {{fontSize:16,fontWeight:'600', paddingTop:20, paddingBottom:20, paddingLeft:20, backgroundColor:'#EFE7DE', color:'#00C26D',height:68}}>{this.props.text} </Text>
-        </TouchableOpacity>
-      );
-         }
-       }
+   var rowID = this.props.rowID;
+
+var colorIndex = rowID % 4;
+
+    var colorCode;
+
+switch (colorIndex) {
+  case 0:
+    colorCode = '#F0D15D';
+    break;
+    case 1:
+      colorCode = '#DF734F';
+      break;
+      case 2:
+        colorCode = '#9D3951';
+        break;
+        case 3:
+          colorCode = '#532F5B';
+          break;
+          case 4:
+            colorCode = '#E7009A';
+            break;
+            case 5:
+              colorCode = '#005399';
+              break;
+              case 6:
+                colorCode = '#00C5EC';
+                break;
+  default:
+
+}
+
+var textColorCode;
+
+switch (colorIndex) {
+case 0:
+textColorCode = '#532F5B';
+break;
+case 1:
+  textColorCode = '#F0D15D';
+  break;
+  case 2:
+    textColorCode = '#532F5B';
+    break;
+    case 3:
+      textColorCode = '#F0D15D';
+      break;
+      case 4:
+        textColorCode = '#E7009A';
+        break;
+        case 5:
+          textColorCode = '#005399';
+          break;
+          case 6:
+            textColorCode = '#00C5EC';
+            break;
+default:
+
+}
+colorCode = 'white';
+textColorCode = '#00C26D';
+
+if (Platform.OS === 'ios') {
+  return (
+    <TouchableOpacity style={{flex:1, flexDirection:'column',alignItems:'flex-start',justifyContent:'center', backgroundColor:colorCode}} onPress={()=> this._pressRow(this.props.text)}>
+     <Text style = {{fontSize:18,fontWeight:'400', paddingTop:20, paddingBottom:20, paddingLeft:20, backgroundColor:colorCode, color:textColorCode,height:68}}>{this.props.text} </Text>
+    </TouchableOpacity>
+  );
+}
+else {
+  return (
+    <TouchableOpacity style={{flex:1, flexDirection:'column',elevation:40 + 8*colorIndex,alignItems:'flex-start',justifyContent:'center', backgroundColor:colorCode}} onPress={()=> this._pressRow(this.props.text)}>
+    <Text style = {{fontSize:18,fontWeight:'400',fontFamily: 'sans-serif-light', paddingTop:20, paddingBottom:20, paddingLeft:20, backgroundColor:colorCode, color:textColorCode,height:68}}>{this.props.text} </Text>
+    </TouchableOpacity>
+  );
+}
+    }
+   }
 
      export default class geekSets extends Component {
 
@@ -64,7 +136,13 @@
 
      componentDidMount() {
          this.listenForItems(this.itemsRef);
-         Actions.refresh({hideNavBar:false});
+
+if (this.state.showProgress && this.state.dataSource.count == undefined) {
+  Actions.refresh({hideNavBar:true});
+}
+else {
+  Actions.refresh({hideNavBar:false});
+}
          isScreenToBeDismissed = false;
        }
 
@@ -89,6 +167,8 @@
              animating:true,
              showProgress:false,
            });
+           Actions.refresh({hideNavBar:false});
+          setTimeout(() => { Actions.refresh({hideNavBar:false});}, 1000)
          });
        }
 
@@ -97,7 +177,7 @@
        }
        renderSeparator(sectionID, rowID) {
            return (
-               <View style={styles.separator} key={sectionID+rowID}/>
+               <View style={styles.separator, {backgroundColor:'#00C26D'}} key={sectionID+rowID}/>
            );
        }
        login(email, password) {
@@ -154,7 +234,7 @@
     }
 
            return (
-               <CompanyCell text={rowData} setInfo={companySetInfo}></CompanyCell>
+               <CompanyCell text={rowData} setInfo={companySetInfo} rowID={rowID}></CompanyCell>
            );
          }
 
@@ -165,10 +245,10 @@
     render () {
 if (this.state.showProgress) {
   return (
-  <View style={{flex:1, backgroundColor:'#EFE7DE'}}>
-  <Text style={{textAlign:'center', paddingTop:160, color:'#075E54',flex:1,fontSize:20,fontWeight:'bold'}}> Initialising... </Text>
-  <Text style={{textAlign:'center', color:'#075E54', flex:1,fontSize:14}}> Please wait for a moment </Text>
-  <ActivityIndicator style={{flex:this.state.showProgress ? 12:0, opacity: this.state.showProgress ? 12.0 : 0.0}} color='#075E54' animating={true} size="large"/>
+  <View style={{flex:1, backgroundColor:'white'}}>
+  <Text style={{textAlign:'center', paddingTop:160, color:'dimgray',flex:1,fontSize:20,fontWeight:'bold'}}> Initialising... </Text>
+  <Text style={{textAlign:'center', color:'dimgray', flex:1,fontSize:14}}> Please wait for a moment </Text>
+  <ActivityIndicator style={{flex:this.state.showProgress ? 12:0, opacity: this.state.showProgress ? 12.0 : 0.0}} color='dimgray' animating={true} size="large"/>
   </View>
      );
 }
@@ -177,10 +257,11 @@ else {
   <View style={{flex:1,backgroundColor:'#EFE7DE'}}>
   <ListView
 
-style = {{flex:this.state.showProgress ? 0:1,paddingTop:80,backgroundColor:'#EFE7DE'}}
+style = {{flex:this.state.showProgress ? 0:1,paddingTop:(Platform.OS === 'ios') ? (64) : 50}}
 
    dataSource={this.state.dataSource}
 enableEmptySections={true}
+ renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}
    renderRow={this._renderRow}
  />
    </View>

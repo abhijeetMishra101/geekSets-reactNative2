@@ -44,17 +44,18 @@ var url = this.props.data;
   }
 
 render () {
+
   if (this.state.isLoaded) {
     return (
       <WebView
           source={{uri: this.state.url}}
-          style={{marginTop: 80}}
+          style={{marginTop: 80, backgroundColor:'#EFE7DE'}}
         />
     );
   }
   else {
     return (
-    <View style={{flex:1}}>
+  //  <View style={{flex:1}}>
     <WebView
         source={{uri: this.state.url}}
         style={{marginTop: 80,flex:1}}
@@ -67,8 +68,8 @@ render () {
             this.forceUpdate();
           }}
       />
-      <ActivityIndicator style={{flex:this.state.isLoaded ? 0:1, opacity: this.state.isLoaded ?0:1}} color='#075E54' animating={true} size="large"/>
-    </View>
+    //   <ActivityIndicator style={{flex:this.state.isLoaded ? 0:1, opacity: this.state.isLoaded ?0:1}} color='#075E54' animating={true} size="large"/>
+    // </View>
     );
   }
 }

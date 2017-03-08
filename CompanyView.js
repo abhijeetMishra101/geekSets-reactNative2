@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-  import {AppRegistry, ListView, View, Image, Text, TouchableOpacity, AsyncStorage} from 'react-native';
+  import {AppRegistry, ListView, View, Image, Text, TouchableOpacity, AsyncStorage, StyleSheet} from 'react-native';
   import {Actions} from 'react-native-router-flux';
 
   import Constants from './Constants';
@@ -63,11 +63,85 @@ this.forceUpdate();
       }
 
     render () {
+      var colorIndex = this.props.rowID % 4;
+
+          var colorCode;
+
+      switch (colorIndex) {
+        case 0:
+          colorCode = '#F0D15D';
+          break;
+          case 1:
+            colorCode = '#DF734F';
+            break;
+            case 2:
+              colorCode = '#9D3951';
+              break;
+              case 3:
+                colorCode = '#532F5B';
+                break;
+                case 4:
+                  colorCode = '#E7009A';
+                  break;
+                  case 5:
+                    colorCode = '#005399';
+                    break;
+                    case 6:
+                      colorCode = '#00C5EC';
+                      break;
+        default:
+
+      }
+
+      var textColorCode;
+
+      switch (colorIndex) {
+      case 0:
+      textColorCode = '#532F5B';
+      break;
+      case 1:
+        textColorCode = '#F0D15D';
+        break;
+        case 2:
+          textColorCode = '#532F5B';
+          break;
+          case 3:
+            textColorCode = '#F0D15D';
+            break;
+            case 4:
+              textColorCode = '#E7009A';
+              break;
+              case 5:
+                textColorCode = '#005399';
+                break;
+                case 6:
+                  textColorCode = '#00C5EC';
+                  break;
+      default:
+
+      }
+      colorCode = 'white';
+      textColorCode = '#00C26D';
+
+
+    if (this.props.sequence/100 == 0) {
+      //1 or 2 digit no
       return (
-        <TouchableOpacity style={{flex:1}} onPress={()=> this._pressRow(this.props.text)}>
-         <Text style = {{flex:1, paddingLeft:20, backgroundColor:'#EFE7DE', color:this.state.isPressed?'#FF3D92':(this.props.isCompleted?'#FF3D92':'#00C26D'),height:60}}>{this.props.text} </Text>
+        <TouchableOpacity style={{flex:1, flexDirection:'row',height:64, backgroundColor:colorCode}} onPress={()=> this._pressRow(this.props.text)}>
+        <Text style = {{flex:1,fontSize:16, paddingLeft:20,paddingTop:20, marginRight:12, backgroundColor:colorCode, color:this.state.isPressed?'#F8A1AB':(this.props.isCompleted?'#F8A1AB':'#075E54'), color:textColorCode,height:60}}>{this.props.sequence + ')'} </Text>
+         <Text style = {{flex:13,fontSize:16, marginRight:12,textDecorationLine:this.state.isPressed?'line-through':'none', paddingLeft:20,paddingTop:20, backgroundColor:colorCode, color:this.state.isPressed?'#F8A1AB':(this.props.isCompleted?'#F8A1AB':'#075E54'), color:textColorCode,height:60}}>{this.props.text} </Text>
         </TouchableOpacity>
       );
+    }
+    else {
+      //3 digit no
+      return (
+        <TouchableOpacity style={{flex:1, flexDirection:'row',height:64, backgroundColor:colorCode}} onPress={()=> this._pressRow(this.props.text)}>
+        <Text style = {{flex:1,fontSize:16,marginRight:12, paddingLeft:20,paddingTop:20, backgroundColor:colorCode, color:this.state.isPressed?'#F8A1AB':(this.props.isCompleted?'#F8A1AB':'#075E54'), color:textColorCode,height:60}}>{this.props.sequence + ')'} </Text>
+         <Text style = {{flex:9,fontSize:16,marginRight:12, textDecorationLine:this.state.isPressed?'line-through':'none',paddingTop:20, paddingLeft:20, backgroundColor:colorCode, color:this.state.isPressed?'#F8A1AB':(this.props.isCompleted?'#F8A1AB':'#075E54'), color:textColorCode,height:60}}>{this.props.text} </Text>
+        </TouchableOpacity>
+      );
+    }
     }
   }
 
@@ -90,6 +164,10 @@ if (value != null && value != undefined) {
 
    var arr = Object.keys(companyInfo).map(function (key) { return companyInfo[key]; });
 
+   arr.sort(function(a, b) {
+       return parseFloat(a.order) - parseFloat(b.order);
+   });
+  //arr.reverse();
   setList = [];
 
   urlList = [];
@@ -160,14 +238,22 @@ if (completedURLList != undefined) {
   }
 }
 
-  return (<SetCell text={rowData} url={urlList[rowID]} isCompleted={completedState} onPressTest={()=>this._fetchCompletedURLs}/>);
+var sequenceID = rowID.valueOf();
+//sequenceID += 1;
+
+  return (<SetCell text={rowData} rowID={rowID} sequence={++sequenceID} url={urlList[rowID]} isCompleted={completedState} onPressTest={()=>this._fetchCompletedURLs}/>);
   }
 
   render() {
       return (
    <ListView
-   style={{paddingTop:80,backgroundColor:'#EFE7DE'}}
+   style={{paddingTop:54,backgroundColor:'#EFE7DE'}}
    enableEmptySections={true}
+  renderSeparator={(sectionId, rowId) => <View key={rowId} style={{
+   flex: 1,
+   height: StyleSheet.hairlineWidth,
+   backgroundColor: '#8E8E8E',
+ }} />}
    dataSource = {this.state.dataSource}
    renderRow = {this._renderRow}/>
       );

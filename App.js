@@ -32,7 +32,11 @@ isIOS () {
 }
 
    componentDidMount() {
-     codePush.sync();
+     let codePushOptions = { checkFrequency: codePush.CheckFrequency.MANUAL };
+
+     codePush.sync({
+                 installMode: codePush.InstallMode.IMMEDIATE
+             });
      AsyncStorage.getItem('isOnboardingSeen').then((value)=>{
      if (value == null || value == undefined) {
      this.state = {
@@ -61,9 +65,9 @@ isIOS () {
     return (
       <Router>
         <Scene key="root">
-        <Scene key="companyList" component={CompanyList} title="Companies" navigationBarStyle={{ backgroundColor: '#00C26D' }}
+        <Scene key="companyList" component={CompanyList} hideNavBar={this.state.isLoading} title="Companies" navigationBarStyle={{ backgroundColor:'#00C26D' }}
 titleStyle={{ color: 'white' }} initial/>
-        <Scene key="onboarding"  component={Onboarding} hideNavBar={true} type="JUMP"/>
+        <Scene key="onboarding"  component={Onboarding} hideNavBar={this.state.isLoading} type="JUMP"/>
         <Scene key='signin' component={SignIn}/>
         <Scene key='signup' component={SignUp}/>
         <Scene key="companyView" component={CompanyView} title="test" navigationBarStyle={{ backgroundColor: '#00C26D' }}
@@ -78,8 +82,8 @@ titleStyle={{ color: '#075E54' }} leftButtonIconStyle={{tintColor:'white'}} onBa
     return (
       <Router>
         <Scene key="root">
-        <Scene key="onboarding"  component={Onboarding} hideNavBar={true} type="JUMP" intial/>
-        <Scene key="companyList" component={CompanyList} title="Companies" navigationBarStyle={{ backgroundColor: '#00C26D' }}
+        <Scene key="onboarding"  component={Onboarding}  navigationBarStyle={{ backgroundColor: '#00C26D' }} hideNavBar={this.state.isLoading} type="JUMP" intial/>
+        <Scene key="companyList" component={CompanyList} hideNavBar={this.state.isLoading} title="Companies" navigationBarStyle={{ backgroundColor: '#00C26D' }}
         titleStyle={{ color: 'white' }}/>
         <Scene key='signin' component={SignIn}/>
         <Scene key='signup' component={SignUp}/>

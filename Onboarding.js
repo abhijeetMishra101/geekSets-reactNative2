@@ -29,13 +29,13 @@ if (Platform.OS === 'ios') {
   return (
   <Onboarding
     pages={[
-      { backgroundColor: '#00C26D', image: <Image source={require('./img/onboarding_ios_1.png')} />, title: 'geekSets', subtitle: 'Lets you prepare for major tech company interviews' },
-        { backgroundColor: "#00C26D", image: <Image source={require('./img/onboarding_ios_2.png')} />, title: 'Choose your category', subtitle: 'Find the list of companies' },
-        { backgroundColor: "#00C26D", image: <Image source={require('./img/onboarding_ios_2.png')} />, title: 'Choose the interview set', subtitle: 'Choose the set of inteview' },
+      { backgroundColor: '#00C26D', image: <Image source={require('./img/onboarding_ios_1.png')} />, title: 'geekSets', subtitle: 'Lets you prepare for interviews' },
+        { backgroundColor: '#00C26D', image: <Image source={require('./img/onboarding_ios_2.png')} />, title: 'Choose your category', subtitle: 'Find the list of companies' },
+        { backgroundColor: '#00C26D', image: <Image source={require('./img/onboarding_ios_3.png')} />, title: 'Choose the interview set', subtitle: 'Choose the set of inteview' },
     ]}
     onEnd={()=> this.onEndCallback('test')}
   >
-  <StatusBar backgroundColor="#00C26D" barStyle="light-content" />
+  <StatusBar backgroundColor='#00C26D' barStyle="light-content" />
   </Onboarding>
   );
 }
@@ -44,12 +44,12 @@ else {
   <Onboarding
     pages={[
         { backgroundColor: '#00C26D', image: <Image source={require('./img/onboarding_1.png')} />, title: 'geekSets', subtitle: '' },
-        { backgroundColor: "#00C26D", image: <Image source={require('./img/onboarding_2.png')} />, title: 'Choose your category', subtitle: 'Find the list of companies' },
-        { backgroundColor: "#00C26D", image: <Image source={require('./img/onboarding_2.png')} />, title: 'Choose the interview set', subtitle: 'Choose the set of inteview' },
+        { backgroundColor: '#00C26D', image: <Image source={require('./img/onboarding_2.png')} />, title: 'Choose your category', subtitle: 'Find the list of companies' },
+        { backgroundColor: '#00C26D', image: <Image source={require('./img/onboarding_3.png')} />, title: 'Choose the interview set', subtitle: 'Choose the set of inteview' },
     ]}
     onEnd={()=> this.onEndCallback('test')}
   >
-  <StatusBar backgroundColor="#00C26D" barStyle="light-content" />
+  <StatusBar backgroundColor='#00C26D' barStyle="light-content" />
   </Onboarding>
   );
 }
